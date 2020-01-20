@@ -5,48 +5,44 @@
 # First name
 # Last name
 # Address
-# The first three properties should be read-only. First name and last name should not be exposed as properties at all, but instead expose a calculated property of full_name. Address should have a getter and setter. 
+# The first three properties should be read-only. 
 
 
 class Patient:
-    def __init__(self, social, birthDate, accountNumber, firstName, lastName):
+    def __init__(self, social, birthDate, accountNumber, firstName, lastName, address):
         self.__social = social
         self.__birthDate = birthDate
         self.__accountNumber = accountNumber
-        self.fullName = firstName + " " + lastName
+        self.__firstName = firstName
+        self.__lastName = lastName
+        self.__address = address
 
         
     @property
     def social(self):
-        try:
-            return self.__social
-        except AttributeError:
-            return "xxx-xxx-xxxx"
+        return self.__social
 
     @property
     def birthDate(self):
-        try:
-            return self.__birthDate
-        except AttributeError:
-            return "12/11/1998"
+        return self.__birthDate
             
     @property
     def accountNumber(self):
-        try:
-            return self.__accountNumber
-        except AttributeError:
-            return 8675309
+        return self.__accountNumber
+
+# First name and last name should not be exposed as properties at all, but instead expose a calculated property of full_name. Address should have a getter and setter. 
+
+    @property
+    def fullName(self):
+        return f"{self.__firstName} {self.__lastName}"
 
     @property
     def address(self):
-        try:
             return self.__address
-        except AttributeError:
-            return "2419 Rodeo Drive"
 
     @address.setter
     def address(self, newAddress):
-        if type is str: 
+        if type(newAddress) is str: 
             self.__address = newAddress
         else: 
             raise TypeError("Please enter a string")
@@ -54,7 +50,8 @@ class Patient:
     def __str__(self):
         return f"{str(self.social)} {str(self.birthDate)} {str(self.accountNumber)} {self.address} {self.fullName}"
 
-patient = Patient("003-345-2127", "11/23/87", "443-002-4556", "Michelle", "Pfieffer")
+patient = Patient("003-345-2127", "11/23/87", "443-002-4556", "Michelle", "Pfieffer", "2456 Rodeo Dr")
+
 
 # # This should not change the state of the object
 # patient.social_security_number = "838-31-2256"
@@ -71,4 +68,5 @@ patient = Patient("003-345-2127", "11/23/87", "443-002-4556", "Michelle", "Pfief
 
 # # But this should output the full name
 # print(patient.full_name)   # "Daniela Agnoletti"
+patient.address = "another place"
 print(patient)
